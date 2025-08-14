@@ -5,15 +5,14 @@ const express=require('express');
 const hostRouter=express.Router();
 //LOCAL MODULES
 const rootDir=require('../utils/pathUtils');
-
+const registeredHomes=[];
 hostRouter.get("/add-home",(req,res,next)=>{
-    res.sendFile(path.join(rootDir,'views','addHome.html') );
+    res.render('addHome',{pageTitle:'register here'}) ;
 })
 hostRouter.post("/add-home",(req,res,next)=>{
-    console.log(req.body);
-    res.sendFile(
-          path.join(rootDir,'views','addHomeSuccess.html')
-       
-        );
+    registeredHomes.push({houseName:req.body.houseName});
+    // console.log(registeredHomes);
+    res.render('addHomeSuccess',{pageTitle:'success registrtion'});
 })
-module.exports=hostRouter;
+exports.hostRouter=hostRouter;
+exports.registeredHomes=registeredHomes;
