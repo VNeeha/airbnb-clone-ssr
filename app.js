@@ -11,6 +11,10 @@ const rootDir=require('./utils/pathUtils')
 const app=express();
 
 app.use(express.urlencoded());
+
+// granting access to public folder
+app.use(express.static(path.join(rootDir,'public')));
+
 app.use("/user",userRouter);
 app.use("/host",hostRouter);
 app.use((req,res,next)=>{

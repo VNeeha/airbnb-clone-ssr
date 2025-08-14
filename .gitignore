@@ -24,7 +24,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Build output
+# Build output (if you build Tailwind CSS manually)
 dist/
 build/
 
@@ -38,5 +38,5 @@ dump.rdb
 # Tailwind cache
 *.cache
 
-# Optional: Ignore public/uploads if you store images locally
+# Optional: Ignore uploads if storing images locally
 # public/uploads

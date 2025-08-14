@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>airbnb</title>
+    <link rel="stylesheet" href="output.css">
 </head>
-<body>
-    <header>
-        <h1>WELCOME TO airbnb</h1>
-    </header>
-    <main>
-        <a href="/host/add-home">Register your home on airbnb</a>
+<body class="bg-white flex flex-col min-h-screen">
+    <!-- Red Navigation Bar -->
+    <nav class="bg-red-500 p-4 flex justify-between items-center">
+        <div class="flex space-x-6">
+            <a href="/" class="text-white hover:text-gray-200 font-medium">Go to Home</a>
+            <a href="/host/add-home" class="text-white hover:text-gray-200 font-medium">Add Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex justify-center items-center bg-white">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md">
+            <h1 class="text-3xl font-bold text-center text-gray-800">Welcome to airbnb</h1>
+        </div>
     </main>
 </body>
 </html>
