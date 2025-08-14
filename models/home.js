@@ -1,94 +1,44 @@
-// handled data using fake database
-    /*    const registeredHomes=[];
-        exports.Home=class Home{
-            constructor(houseName,location,price,rating,photoUrl){
-                this.houseName=houseName;
-                this.location=location;
-                this.price=price;
-                this.rating=rating;
-                this.photoUrl=photoUrl;
-            }
-            save(){
-                registeredHomes.push(this);
-            }
-            static fetchAll(){
-                return registeredHomes;
-            }
-        }*/
-
-// handling data using file reading and writing so data will remain even after server restarting
-
-// CORE MODULES
-const fs=require('fs');
-const path=require('path');
 // LOCAL MODULES
-const rootDir=require('../utils/pathUtils');
+const db=require('../utils/databaseUtil');
 const Favourite=require('./favourites')
 
-const dataFilePath=path.join(rootDir,'data','registeredHomes.json');
+
 
 exports.Home=class Home{
-            constructor(houseName,location,price,rating,photoUrl){
+            constructor(houseName,location,price,rating,photoUrl,description,id){
                 this.houseName=houseName;
                 this.location=location;
                 this.price=price;
                 this.rating=rating;
                 this.photoUrl=photoUrl;
+                this.description=description;
+                this.id=id;
+
             }
             save(){
-                
-                 Home.fetchAll((registeredHomes)=>{ 
-                     console.log(this,this.id)
-                    if(this.id){
-
-                        registeredHomes=registeredHomes.map((home)=>home.id!==this.id?home:this);
-                    }
-                    else{
-                        this.id=Math.random().toString();
-                        registeredHomes.push(this);
-                        
-                    }                    
-                   fs.writeFile(dataFilePath,JSON.stringify(registeredHomes),error=>console.log("file writing",error));
-                });
+              
+              return db.execute('INSERT INTO homes(houseName,price,rating,location,photoUrl,description) VALUES(?,?,?,?,?,?)',[this.houseName,this.price,this.rating,this.location,this.photoUrl,this.description])
                 
             }
-            static fetchAll(callBack){
+            update() {
+                return db.execute(
+                  'UPDATE homes SET houseName=?, price=?, rating=?, location=?, photoUrl=?, description=? WHERE id=?',
+                  [this.houseName, this.price, this.rating, this.location, this.photoUrl, this.description, this.id]
+                );
+              }
+
+
+            static fetchAll(){
+              return  db.execute("SELECT * FROM homes");
+               
+            }
+            static findById(homeId,callBack){
+              return db.execute("SELECT * FROM homes WHERE id=?",[homeId]);
+            }
+
+            static delete(homeId){
+               return db.execute("DELETE FROM homes WHERE id=?",[homeId]);
                 
-                fs.readFile(dataFilePath,(err,data)=>{
-                    let homes=[];
-                    if(!err&&data.length>0){
-                        homes=JSON.parse(data);
-                        if(!Array.isArray(homes)){
-                            homes=[homes];
-                        }
-                    }
-                    callBack(homes);
-                });
-            }
-            static findById(id,callBack){
-                Home.fetchAll((registeredHomes)=>{
-                    const homeFound=registeredHomes.find((home)=>home.id===id);
-                    callBack(homeFound);
-                })
-            }
-
-            static delete(homeId,callBack){
-                Home.fetchAll((registeredHomes)=>{
-                    registeredHomes=registeredHomes.filter((home)=>home.id!==homeId);
-                    
-                    fs.writeFile(dataFilePath, JSON.stringify(registeredHomes), (err) => {
-                    if (err) return callBack(err);
-
-                    // Then, delete from favourites
-                    Favourite.delete(homeId, (favErr) => {
-                        if (favErr) return callBack(favErr);
-
-                        // Both operations done successfully
-                        callBack(null);
-                        });
-                    });
-
-                })
             }
         }
 

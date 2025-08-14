@@ -9,6 +9,7 @@ const {storeRouter}=require('./routes/storeRouter');
 const {hostRouter}=require('./routes/hostRouter');
 const rootDir=require('./utils/pathUtils');
 const errorController=require('./controllers/errors');
+const db=require('./utils/databaseUtil');
 
 // creating app
 const app=express();

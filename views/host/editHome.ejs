@@ -13,6 +13,7 @@
             <input type="text" name="location" value='<%= editing==true ? home.location:""%>'  placeholder="Location" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
             <input type="text" name="rating" value='<%= editing==true ? home.rating:""%>'  placeholder="Rating" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
             <input type="text" name="photoUrl" value='<%= editing==true ? home.photoUrl:""%>'  placeholder="House photo" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
+             <textarea type="text" name="description"   placeholder="Describe your home" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500"><%= editing==true ? home.description:""%></textarea>
             <input type="submit" value=<%=editing==true?'Update':"Submit"%> class="w-full bg-red-500 text-white  py-2 rounded-md hover:bg-red-600 transition duration-300">
         </form>
     </main>

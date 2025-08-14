@@ -32,6 +32,8 @@ module.exports=class Favourites{
         Favourites.getFavouirites((favouriteHomes)=>{
             favouriteHomes=favouriteHomes.filter((favourite)=>favourite!=homeId);
             fs.writeFile(favouriteHomesPath,JSON.stringify(favouriteHomes),callBack);
+
+
     });
     }
 }
