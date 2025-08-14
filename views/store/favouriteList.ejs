@@ -9,7 +9,7 @@
 
             <!-- Cards Grid (responsive) -->
             <div class="grid gap-6 justify-items-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                <%registeredHomes.forEach((home)=>{%>
+                <%favouriteHomes.forEach((home)=>{%>
                 <!-- Single Card (structure only; no EJS here) -->
                 <article class="bg-white rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow w-full max-w-sm">
                     <img src="<%=home.photoUrl%>" alt="Home image" class="h-44 w-full object-cover" loading="lazy">
@@ -26,7 +26,10 @@
                                 <span class="ml-1 text-gray-800 font-bold"><%=home.rating%></span>
                             </span>
                         </div>
-                        <a class="inline-block px-4 py-1 bg-green-500 rounded-lg shadow-md mt-1">Book</a>
+                        <form action="/store/favourites/delete/<%=home.id%>" method="POST">
+                            <input type="submit" value="Remove from favourites" class="px-4 py-1 bg-green-500 rounded-lg shadow-md mt-1">
+                        </form>
+                        
                     </div>
                 </article>
                 <%})%>

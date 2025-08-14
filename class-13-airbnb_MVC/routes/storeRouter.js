@@ -8,8 +8,5 @@ storeRouter.get("/",storeController.getIndex);
 storeRouter.get("/homes",storeController.getHomes);
 storeRouter.get("/bookings",storeController.getBookings);
 storeRouter.get("/favourites",storeController.getFavouriteList);
-storeRouter.get("/homes/:homeId",storeController.getHomeDetails);
-storeRouter.post("/favourites",storeController.AddToFavourites);
-storeRouter.post("/favourites/delete/:homeId",storeController.DeleteFromFavourites);
 
 exports.storeRouter=storeRouter;
