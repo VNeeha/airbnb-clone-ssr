@@ -1,19 +1,32 @@
 
    
-        <!-- <nav class="flex justify-between items-center">
-            <div class="flex space-x-6">
-                <a href="/user" class="text-white hover:text-gray-200 transition-colors ">Go to Home</a>
-                <a href="/host/add-home" class="text-white hover:text-gray-200 transition-colors">Add Home</a>
-            </div> -->
+       
      <header class="bg-red-600  text-white p-4">
         <nav class="container mx-auto flex justify-between items-center">
             <ul class="flex space-x-4">
                 <li>
-                    <a href="/user" class="hover:bg-red-400 py-2 px-4 rounded transition duration-300">Go to home</a>
+                    <a href="/store" class="<%= currentPage === 'index'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">airbnb</a>
                 </li>
                 <li>
-                    <a href="/host/add-home"
-                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300">Add home</a>
+                    <a href="/store/homes" class="<%= currentPage === 'home'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Homes</a>
+                </li>
+                <li>
+                    <a href="/store/favourites"
+                    class="<%=currentPage === 'favourites'?'bg-red-400':' hover:bg-red-400' %>
+                     py-2 px-4 rounded transition duration-300">Favourites</a>
+                </li>
+                <li>
+                    <a href="/store/bookings"
+                    class="<%=currentPage === 'bookings'?'bg-red-400':' hover:bg-red-400' %>
+                     py-2 px-4 rounded transition duration-300">Bookings</a>
+                </li>
+                <li>
+                    <a href="/host/hostHomeList" class="<%= currentPage === 'hostHomes'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Host homes</a>
+                </li>
+                <li>
+                    <a href="/host/addHome"
+                    class="<%=currentPage === 'addHome'?'bg-red-400':' hover:bg-red-400' %>
+                     py-2 px-4 rounded transition duration-300">Add home</a>
                 </li>
             </ul>
         

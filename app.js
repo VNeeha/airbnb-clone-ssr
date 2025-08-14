@@ -5,16 +5,17 @@ const path=require('path');
 const express=require('express');
 
 // LOCAL MODULES
-const userRouter=require('./routes/user');
-const {hostRouter}=require('./routes/host');
-const rootDir=require('./utils/pathUtils')
+const {storeRouter}=require('./routes/storeRouter');
+const {hostRouter}=require('./routes/hostRouter');
+const rootDir=require('./utils/pathUtils');
+const errorController=require('./controllers/errors');
 
 // creating app
 const app=express();
 
 // setting ejs with express and specifying path to ejs templates
 app.set('view engine','ejs');
-app.set('views','views');
+app.set('views',path.join(__dirname, 'views'));
 
 // parsing request
 app.use(express.urlencoded());
@@ -23,21 +24,12 @@ app.use(express.urlencoded());
 app.use(express.static(path.join(rootDir,'public')));
 
 // using routers for seperate interfaces-host,user
-app.use("/user",userRouter);
+app.use("/store",storeRouter);
 app.use("/host",hostRouter);
 
 // unknown routing handling
-app.use((req,res,next)=>{
-    // res.status(404).sendFile(path.join(__dirname,'views','404.html'));
-
-    //with fileHelper
-    // res.status(404).sendFile(path.join(rootDir,'views','404.html'));
-
-    // with partial and ejs
-    res.render('404',{pageTitle:'page not found'});
-
-})
+app.use(errorController.pageNotFound);
 
 // starting server
 const PORT=3007;
-app.listen(PORT,()=>console.log(`server is running at address-http://localhost:${PORT}/user`));
+app.listen(PORT,()=>console.log(`server is running at address-http://localhost:${PORT}/store`));
