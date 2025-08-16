@@ -7,7 +7,7 @@
     <main class="container mx-auto mt-8 p-8 shadow-md rounded-lg ">
         <h1 class="text-gray-800 font-bold text-3xl mb-6 text-center"><%=editing==true?'Update':'Register'%> your home on Airbnb</h1>
         <form action="<%=editing==true?'/host/editHome':'/host/addHome'%>" method="POST" class=" max-w-md mx-auto">
-            <input type="hidden" name="id" value="<%=editing==true?home.id:''%>">
+            <input type="hidden" name="id" value="<%=editing==true?home._id:''%>">
             <input type="text" name="houseName" value='<%= editing==true ? home.houseName:""%>'  placeholder="Enter your house name" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
             <input type="text" name="price" value='<%= editing==true ? home.price:""%>'  placeholder="Enter price per night" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
             <input type="text" name="location" value='<%= editing==true ? home.location:""%>'  placeholder="Location" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">

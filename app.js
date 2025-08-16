@@ -9,7 +9,7 @@ const {storeRouter}=require('./routes/storeRouter');
 const {hostRouter}=require('./routes/hostRouter');
 const rootDir=require('./utils/pathUtils');
 const errorController=require('./controllers/errors');
-const db=require('./utils/databaseUtil');
+const {mongoConnect}=require('./utils/databaseUtil');
 
 // creating app
 const app=express();
@@ -31,6 +31,10 @@ app.use("/host",hostRouter);
 // unknown routing handling
 app.use(errorController.pageNotFound);
 
-// starting server
+// starting server after connecting to db
 const PORT=3007;
-app.listen(PORT,()=>console.log(`server is running at address-http://localhost:${PORT}/store`));
+
+mongoConnect(()=>{
+    app.listen(PORT,()=>console.log(`server is running at address-http://localhost:${PORT}/store`));
+})
+

@@ -1,4 +1,5 @@
 // LOCAL MODULES
+const Favourites = require('../models/favourites');
 const {Home}=require('../models/home')
 
 exports.getAddHome=(req,res,next)=>{
@@ -8,21 +9,18 @@ exports.getAddHome=(req,res,next)=>{
 exports.getEditHome=(req,res,next)=>{
     const homeId=req.params.homeId;
     const editing=req.query.editing==='true';
-    Home.findById(homeId).then(([homes])=>{
-        const home=homes[0];
+    Home.findById(homeId).then(home=>{
         if(!home){
             res.redirect('/host/hostHomeList')
         }
         else{
             res.render('host/editHome',{home:home,pageTitle:'edit home here',currentPage:'hostHomes',editing:editing}) ;
-        }
-       
-    })
-    
+        }      
+    })    
 };
 
 exports.getHostHomes=(req,res,next)=>{
-    Home.fetchAll().then(([registeredHomes])=>{
+    Home.fetchAll().then(registeredHomes=>{
         res.render('host/hostHomeList',{registeredHomes:registeredHomes,pageTitle:'host homes list',currentPage:'hostHomes'});
     });
     
@@ -30,21 +28,17 @@ exports.getHostHomes=(req,res,next)=>{
 exports.postAddHome=(req,res,next)=>{
     const {houseName,location,price,rating,photoUrl,description}=req.body;
     const home=new Home(houseName,location,price,rating,photoUrl,description);
-
     home.save()
     .then(()=>{
         res.redirect('/host/hostHomeList');
     })
     .catch((err)=>{
         console.log("cant add home",err)
-    });
-    
+    });    
 };
 exports.postEditHome=(req,res,next)=>{
     const {houseName,location,price,rating,photoUrl,description,id}=req.body;
     const home=new Home(houseName,location,price,rating,photoUrl,description,id);
-    
-
     home.update()
     .then(()=>{
         res.redirect('/host/hostHomeList');
@@ -52,16 +46,21 @@ exports.postEditHome=(req,res,next)=>{
     .catch((err)=>{
         console.log("cant add home",err)
     });
-    
 };
 
 exports.postDeleteHome=(req,res,next)=>{
     const homeId=req.params.homeId;
-    Home.delete(homeId).then(()=>{
+    Favourites.deleteById(homeId)
+    .then(()=>{
+        Home.delete(homeId)
+        .then(()=>{
           res.redirect('/host/hostHomeList');
+        })
+        .catch((err)=>{
+            console.log("cant delete from homes list",err)
+        });
     })
     .catch((err)=>{
-        console.log("cant add home",err)
-    });
-  
+            console.log("cant delete from favourites list",err)
+        });  
 }

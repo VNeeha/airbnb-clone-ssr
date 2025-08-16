@@ -1,44 +1,57 @@
+// EXTERNAL MODULES
+const {ObjectId}=require('mongodb');
 // LOCAL MODULES
-const db=require('../utils/databaseUtil');
-const Favourite=require('./favourites')
+const {getDb}=require('../utils/databaseUtil');
+
 
 
 
 exports.Home=class Home{
-            constructor(houseName,location,price,rating,photoUrl,description,id){
+            constructor(houseName,location,price,rating,photoUrl,description,_id){
                 this.houseName=houseName;
                 this.location=location;
                 this.price=price;
                 this.rating=rating;
                 this.photoUrl=photoUrl;
                 this.description=description;
-                this.id=id;
+                if(_id)
+                this._id=_id;
 
             }
             save(){
-              
-              return db.execute('INSERT INTO homes(houseName,price,rating,location,photoUrl,description) VALUES(?,?,?,?,?,?)',[this.houseName,this.price,this.rating,this.location,this.photoUrl,this.description])
-                
+              const db=getDb();
+              return db.collection("homes").insertOne(this);
             }
-            update() {
-                return db.execute(
-                  'UPDATE homes SET houseName=?, price=?, rating=?, location=?, photoUrl=?, description=? WHERE id=?',
-                  [this.houseName, this.price, this.rating, this.location, this.photoUrl, this.description, this.id]
-                );
-              }
 
+            update() {
+              const db=getDb();
+              const updateObj={
+                houseName:this.houseName,
+                location:this.location,
+                price:this.price,
+                rating:this.rating,
+                photoUrl:this.photoUrl,
+                description:this.description
+              }
+              return db.collection("favourites").updateOne({_id:new ObjectId(String(this._id))},{$set:updateObj}).then(()=>{
+                return db.collection("homes").updateOne({_id:new ObjectId(String(this._id))},{
+                $set:updateObj});
+              })              
+            }
 
             static fetchAll(){
-              return  db.execute("SELECT * FROM homes");
-               
+              const db=getDb();
+              return db.collection('homes').find().toArray();
             }
-            static findById(homeId,callBack){
-              return db.execute("SELECT * FROM homes WHERE id=?",[homeId]);
+            
+            static findById(homeId){
+              const db=getDb();
+             return db.collection('homes').find({_id:new ObjectId(String(homeId))}).next();
             }
 
             static delete(homeId){
-               return db.execute("DELETE FROM homes WHERE id=?",[homeId]);
-                
+              const db=getDb();      
+              return db.collection('homes').deleteOne({_id:new ObjectId(String(homeId))});                      
             }
         }
 

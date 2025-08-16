@@ -1,39 +1,24 @@
 // CORE MODULES
-const fs=require('fs');
-const path=require('path');
+const {ObjectId}=require('mongodb');
 // LOCAL MODULES
-const rootDir=require('../utils/pathUtils');
+const {getDb}=require('../utils/databaseUtil')
+const {Home}=require('./home');
 
-const favouriteHomesPath=path.join(rootDir,'data','favouriteHomes.json');
 module.exports=class Favourites{
-
-    static addToFavourites(homeId,callBack){
-        Favourites.getFavouirites((favouriteHomes)=>{
-            if(favouriteHomes.includes(homeId)){
-                callBack("Home is already added to favourites")
-            }else{
-                favouriteHomes.push(homeId);
-                fs.writeFile(favouriteHomesPath,JSON.stringify(favouriteHomes),callBack);
-            }
-        })
+    constructor(homeId){
+        this.homeId=homeId;
     }
-    static getFavouirites(callBack){
-      fs.readFile(favouriteHomesPath,(err,data)=>{
-       let favourites=[]
-        if(!err&&data.length>0){
-            favourites=JSON.parse(data);
-            if(!Array.isArray(favourites))
-                favourites=[favourites]
-        }
-        callBack(favourites);
-      })
+    save(){
+        const db=getDb();
+        return db.collection('favourites').insertOne(this);     
     }
-    static delete(homeId,callBack){
-        Favourites.getFavouirites((favouriteHomes)=>{
-            favouriteHomes=favouriteHomes.filter((favourite)=>favourite!=homeId);
-            fs.writeFile(favouriteHomesPath,JSON.stringify(favouriteHomes),callBack);
+    static fetchAll(){
+      const db=getDb();
+      return db.collection('favourites').find().toArray();
+    }
 
-
-    });
+    static deleteById(homeId){
+        const db=getDb();
+        return db.collection('favourites').deleteOne({homeId});
     }
 }
