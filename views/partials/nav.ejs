@@ -7,27 +7,41 @@
                 <li>
                     <a href="/store" class="<%= currentPage === 'index'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">airbnb</a>
                 </li>
+                <%if(isLoggedIn==true){%>
+                    <li>
+                        <a href="/store/homes" class="<%= currentPage === 'home'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Homes</a>
+                    </li>
+                    <li>
+                        <a href="/store/favourites"
+                        class="<%=currentPage === 'favourites'?'bg-red-400':' hover:bg-red-400' %>
+                        py-2 px-4 rounded transition duration-300">Favourites</a>
+                    </li>
+                    <li>
+                        <a href="/store/bookings"
+                        class="<%=currentPage === 'bookings'?'bg-red-400':' hover:bg-red-400' %>
+                        py-2 px-4 rounded transition duration-300">Bookings</a>
+                    </li>
+                    <li>
+                        <a href="/host/hostHomeList" class="<%= currentPage === 'hostHomes'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Host homes</a>
+                    </li>
+                    <li>
+                        <a href="/host/addHome"
+                        class="<%=currentPage === 'addHome'?'bg-red-400':' hover:bg-red-400' %>
+                        py-2 px-4 rounded transition duration-300">Add home</a>
+                    </li>
+                    <li>
+                        <form action="/auth/logOut" method="POST" >
+                            <button type="submit" value="Log out" class="<%=currentPage === 'logout'?'bg-red-400':' hover:bg-red-400' %>
+                            py-2 px-4 rounded transition duration-300">Logout</button>
+                        </form>
+                   </li>
+                <%}else{%>
                 <li>
-                    <a href="/store/homes" class="<%= currentPage === 'home'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Homes</a>
+                    <a href="/auth/login"
+                    class="<%=currentPage === 'login'?'bg-red-400':' hover:bg-red-400' %>
+                     py-2 px-4 rounded transition duration-300">login</a>
                 </li>
-                <li>
-                    <a href="/store/favourites"
-                    class="<%=currentPage === 'favourites'?'bg-red-400':' hover:bg-red-400' %>
-                     py-2 px-4 rounded transition duration-300">Favourites</a>
-                </li>
-                <li>
-                    <a href="/store/bookings"
-                    class="<%=currentPage === 'bookings'?'bg-red-400':' hover:bg-red-400' %>
-                     py-2 px-4 rounded transition duration-300">Bookings</a>
-                </li>
-                <li>
-                    <a href="/host/hostHomeList" class="<%= currentPage === 'hostHomes'?'bg-red-400':'hover:bg-red-400'%> py-2 px-4 rounded transition duration-300">Host homes</a>
-                </li>
-                <li>
-                    <a href="/host/addHome"
-                    class="<%=currentPage === 'addHome'?'bg-red-400':' hover:bg-red-400' %>
-                     py-2 px-4 rounded transition duration-300">Add home</a>
-                </li>
+                <%}%>
             </ul>
         
         </nav>

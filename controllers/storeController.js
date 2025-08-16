@@ -7,7 +7,7 @@ const Favourite=require('../models/favourites');
 
 exports.getIndex=(req,res,next)=>{
        Home.find().then(registeredHomes=>{
-        res.render('store/index',{registeredHomes:registeredHomes,pageTitle:'airbnb Home',currentPage:'index'});
+        res.render('store/index',{registeredHomes:registeredHomes,pageTitle:'airbnb Home',currentPage:'index',isLoggedIn:req.isLoggedIn});
     })
         
     ;
@@ -16,7 +16,7 @@ exports.getIndex=(req,res,next)=>{
 
 exports.getHomes=(req,res,next)=>{
      Home.find().then(registeredHomes=>{
-        res.render('store/homeList',{registeredHomes:registeredHomes,pageTitle:'homes list',currentPage:'home'});
+        res.render('store/homeList',{registeredHomes:registeredHomes,pageTitle:'homes list',currentPage:'home',isLoggedIn:req.isLoggedIn});
     });
     
 };
@@ -30,13 +30,13 @@ exports.getHomeDetails=(req,res,next)=>{
             res.redirect('/store/homes');
         }
         else{
-            res.render('store/homeDetail',{home:home,pageTitle:'home details',currentPage:'home'});
+            res.render('store/homeDetail',{home:home,pageTitle:'home details',currentPage:'home',isLoggedIn:req.isLoggedIn});
         } 
     });
 };
 
 exports.getBookings=(req,res,next)=>{   
-        res.render('store/bookings',{pageTitle:'My bookings',currentPage:'bookings'}); 
+        res.render('store/bookings',{pageTitle:'My bookings',currentPage:'bookings',isLoggedIn:req.isLoggedIn}); 
 };
 
 
@@ -52,7 +52,7 @@ exports.getFavouriteList=(req,res,next)=>{
         //     const favouriteHomes=registeredHomes.filter((home)=>
         //         favouritesId.includes(home._id.toString())
         //     )  
-            res.render('store/favouriteList',{favouriteHomes:favouriteHomes,pageTitle:'My favourites',currentPage:'favourites'});
+            res.render('store/favouriteList',{favouriteHomes:favouriteHomes,pageTitle:'My favourites',currentPage:'favourites',isLoggedIn:req.isLoggedIn});
         })
         .catch((err)=>{
             console.log("cant retrieve registered homes",err)
@@ -70,7 +70,6 @@ exports.AddToFavourites=(req,res,next)=>{
     Favourite.findOne({homeId}).then((home)=>{
         if(home){
             console.log("Favourite already added");
-            res.redirect('/store/favourites'); 
         }else{
              const favourite=new Favourite({homeId});
             favourite.save()
@@ -79,12 +78,11 @@ exports.AddToFavourites=(req,res,next)=>{
             .catch(error=>{
                 console.log("Favourite added status",error);
             })
-            .finally(()=>{
-                res.redirect('/store/favourites'); 
-            })
         }
     })
-    
+    .finally(()=>{
+         res.redirect('/store/favourites'); 
+    })
     
 };
 

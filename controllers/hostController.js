@@ -5,7 +5,7 @@ const Favourites = require('../models/favourites');
 const Home=require('../models/home')
 
 exports.getAddHome=(req,res,next)=>{
-    res.render('host/editHome',{pageTitle:'register here',currentPage:'addHome',editing:false}) ;
+    res.render('host/editHome',{pageTitle:'register here',currentPage:'addHome',editing:false,isLoggedIn:req.isLoggedIn}) ;
 };
 
 exports.getEditHome=(req,res,next)=>{
@@ -17,7 +17,7 @@ exports.getEditHome=(req,res,next)=>{
             res.redirect('/host/hostHomeList')
         }
         else{
-            res.render('host/editHome',{home:home,pageTitle:'edit home here',currentPage:'hostHomes',editing:editing}) ;
+            res.render('host/editHome',{home:home,pageTitle:'edit home here',currentPage:'hostHomes',editing:editing,isLoggedIn:req.isLoggedIn}) ;
         }
        
     })
@@ -26,7 +26,7 @@ exports.getEditHome=(req,res,next)=>{
 
 exports.getHostHomes=(req,res,next)=>{
     Home.find().then(registeredHomes=>{
-        res.render('host/hostHomeList',{registeredHomes:registeredHomes,pageTitle:'host homes list',currentPage:'hostHomes'});
+        res.render('host/hostHomeList',{registeredHomes:registeredHomes,pageTitle:'host homes list',currentPage:'hostHomes',isLoggedIn:req.isLoggedIn});
     });
     
 };
