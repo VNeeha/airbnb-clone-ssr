@@ -1,24 +1,14 @@
 // CORE MODULES
-const {ObjectId}=require('mongodb');
-// LOCAL MODULES
-const {getDb}=require('../utils/databaseUtil')
-const {Home}=require('./home');
+const mongoose=require('mongoose');
 
-module.exports=class Favourites{
-    constructor(homeId){
-        this.homeId=homeId;
-    }
-    save(){
-        const db=getDb();
-        return db.collection('favourites').insertOne(this);     
-    }
-    static fetchAll(){
-      const db=getDb();
-      return db.collection('favourites').find().toArray();
-    }
 
-    static deleteById(homeId){
-        const db=getDb();
-        return db.collection('favourites').deleteOne({homeId});
+
+const favouriteSchema=mongoose.Schema({
+    homeId:{
+        type:mongoose.Schema.Types.ObjectId,ref:'Home',
+        required:true,
+        unique:true
     }
-}
+});
+
+module.exports=mongoose.model('Favourite',favouriteSchema);

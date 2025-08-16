@@ -1,57 +1,23 @@
 // EXTERNAL MODULES
-const {ObjectId}=require('mongodb');
+const mongoose=require('mongoose');
 // LOCAL MODULES
-const {getDb}=require('../utils/databaseUtil');
+const Favourite=require('./favourites');
 
 
+// id automatically added by mongoose
+const homeSchema=mongoose.Schema({
+  houseName:{type:String,required:true},
+  price:{type:String,required:true},
+  location:{type:String,required:true},
+  rating:{type:String,required:true},
+  photoUrl:String,
+  description:String
+});
 
+homeSchema.pre('findOneAndDelete',async function(next){
+  const homeId=this.getQuery()._id;
+  await Favourite.deleteMany({homeId});
+  next();
+})
 
-exports.Home=class Home{
-            constructor(houseName,location,price,rating,photoUrl,description,_id){
-                this.houseName=houseName;
-                this.location=location;
-                this.price=price;
-                this.rating=rating;
-                this.photoUrl=photoUrl;
-                this.description=description;
-                if(_id)
-                this._id=_id;
-
-            }
-            save(){
-              const db=getDb();
-              return db.collection("homes").insertOne(this);
-            }
-
-            update() {
-              const db=getDb();
-              const updateObj={
-                houseName:this.houseName,
-                location:this.location,
-                price:this.price,
-                rating:this.rating,
-                photoUrl:this.photoUrl,
-                description:this.description
-              }
-              return db.collection("favourites").updateOne({_id:new ObjectId(String(this._id))},{$set:updateObj}).then(()=>{
-                return db.collection("homes").updateOne({_id:new ObjectId(String(this._id))},{
-                $set:updateObj});
-              })              
-            }
-
-            static fetchAll(){
-              const db=getDb();
-              return db.collection('homes').find().toArray();
-            }
-            
-            static findById(homeId){
-              const db=getDb();
-             return db.collection('homes').find({_id:new ObjectId(String(homeId))}).next();
-            }
-
-            static delete(homeId){
-              const db=getDb();      
-              return db.collection('homes').deleteOne({_id:new ObjectId(String(homeId))});                      
-            }
-        }
-
+module.exports=mongoose.model("Home",homeSchema);

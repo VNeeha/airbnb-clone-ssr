@@ -3,13 +3,16 @@ const path=require('path');
 
 // EXTERNAL MODULES
 const express=require('express');
+require('dotenv').config();
+const {default:mongoose}=require('mongoose');
 
 // LOCAL MODULES
 const {storeRouter}=require('./routes/storeRouter');
 const {hostRouter}=require('./routes/hostRouter');
 const rootDir=require('./utils/pathUtils');
 const errorController=require('./controllers/errors');
-const {mongoConnect}=require('./utils/databaseUtil');
+const MONGO_URL = process.env.MONGO_URL;
+
 
 // creating app
 const app=express();
@@ -33,8 +36,15 @@ app.use(errorController.pageNotFound);
 
 // starting server after connecting to db
 const PORT=3007;
-
-mongoConnect(()=>{
+// connecting to mongoDB
+// MONGO_URL is defined in .env file and starting server only if connection is successful
+// if connection fails, it will log the error message
+mongoose.connect(MONGO_URL)
+.then(()=>{
+    console.log("connected to mongoDb")
     app.listen(PORT,()=>console.log(`server is running at address-http://localhost:${PORT}/store`));
+})
+.catch(err=>{
+    console.log("cant connect to mongodb")
 })
 

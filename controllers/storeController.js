@@ -1,10 +1,12 @@
+// CORE MODULES
+const mongoose=require('mongoose');
 // LOCAL MODULES
-const {Home}=require('../models/home');
-const Favourites=require('../models/favourites');
+const Home=require('../models/home');
+const Favourite=require('../models/favourites');
 
 
 exports.getIndex=(req,res,next)=>{
-       Home.fetchAll().then(registeredHomes=>{
+       Home.find().then(registeredHomes=>{
         res.render('store/index',{registeredHomes:registeredHomes,pageTitle:'airbnb Home',currentPage:'index'});
     })
         
@@ -13,7 +15,7 @@ exports.getIndex=(req,res,next)=>{
 };
 
 exports.getHomes=(req,res,next)=>{
-     Home.fetchAll().then(registeredHomes=>{
+     Home.find().then(registeredHomes=>{
         res.render('store/homeList',{registeredHomes:registeredHomes,pageTitle:'homes list',currentPage:'home'});
     });
     
@@ -21,6 +23,7 @@ exports.getHomes=(req,res,next)=>{
 
 exports.getHomeDetails=(req,res,next)=>{
     const homeId=req.params.homeId;
+   
     Home.findById(homeId).then(home=>{
 
         if(!home){
@@ -38,39 +41,62 @@ exports.getBookings=(req,res,next)=>{
 
 
 exports.getFavouriteList=(req,res,next)=>{   
-    Favourites.fetchAll().then((favouritesId)=>{
-        favouritesId=favouritesId.map(favourite=>favourite.homeId)
-           Home.fetchAll().then((registeredHomes)=>{
-             
-            const favouriteHomes=registeredHomes.filter(home=>favouritesId.includes(home._id.toString()))
+    Favourite.find().populate('homeId')
+    .then((favourites)=>{
+       
+       const favouriteHomes=favourites.map(favourite=>favourite.homeId);
+        // const favouritesId=favourites.map((favourite)=>favourite.homeId.toString());
+        // Home.find()
+        // .then((registeredHomes)=>{
            
+        //     const favouriteHomes=registeredHomes.filter((home)=>
+        //         favouritesId.includes(home._id.toString())
+        //     )  
             res.render('store/favouriteList',{favouriteHomes:favouriteHomes,pageTitle:'My favourites',currentPage:'favourites'});
-           })
         })
+        .catch((err)=>{
+            console.log("cant retrieve registered homes",err)
+        })  
+        
+    // })
+    // .catch(err=>{
+    //     console.log("cant retrieve favourite homes")
+    // })
+        
 };
 
-exports.AddToFavourites=(req,res,next)=>{  
-    const favourite=new Favourites(req.body._id);
-    favourite.save() 
-    .then(()=>{console.log("Added to favourites")
+exports.AddToFavourites=(req,res,next)=>{   
+    const homeId=req.body.id;
+    Favourite.findOne({homeId}).then((home)=>{
+        if(home){
+            console.log("Favourite already added");
+            res.redirect('/store/favourites'); 
+        }else{
+             const favourite=new Favourite({homeId});
+            favourite.save()
+            .then(()=>{console.log("Added to favourites")
+            })
+            .catch(error=>{
+                console.log("Favourite added status",error);
+            })
+            .finally(()=>{
+                res.redirect('/store/favourites'); 
+            })
+        }
     })
-    .catch(error=>{
-         console.log("Favourite added to file status",error);
-    })
-    res.redirect('/store/favourites'); 
+    
+    
 };
 
 exports.DeleteFromFavourites=(req,res,next)=>{
     const homeId=req.params.homeId;
-    Favourites.deleteById(homeId)
-    .then(()=>{console.log("Deleted favourites")
+    Favourite.findOneAndDelete({homeId})
+    .then(()=>{console.log("deleted from favourites")
     })
     .catch(error=>{
-         console.log("Favourite deletion status",error);
-    }).finally(()=>{
-        res.redirect('/store/favourites');
-    });
-  
+         console.log("Favourite deleted status",error);
+    })
+    res.redirect('/store/favourites'); 
     
 }
 
