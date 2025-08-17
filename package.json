@@ -2,14 +2,16 @@
   "name": "class-10-airbnb",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
+"scripts": {
   "test": "echo \"Error: no test specified\" && exit 1",
   "serve": "nodemon app.js",
-  "tailwind": "npx tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+  "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
   "dev": "concurrently \"npm run serve\" \"npm run tailwind\"",
-  "build:css": "npx tailwindcss -i ./views/input.css -o ./public/output.css --minify",
+  "build:css": "tailwindcss -i ./views/input.css -o ./public/output.css --minify",
+  "build": "npm run build:css",
   "start": "node app.js"
-},
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
