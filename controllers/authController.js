@@ -124,6 +124,7 @@ exports.postLogin=async (req,res,next)=>{
         if(await bcrypt.compare(password,user.password)){
              req.session.isLoggedIn=true;
              req.session.user=user;
+             console.log(user)
              await req.session.save();
              return res.redirect('/store');
         }
@@ -134,6 +135,8 @@ exports.postLogin=async (req,res,next)=>{
         oldInputs:{email},
         user:req.session.user
         })
+    
+   
 }
 
 exports.postLogOut=(req,res,next)=>{

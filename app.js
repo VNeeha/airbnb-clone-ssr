@@ -7,6 +7,7 @@ const {default:mongoose}=require('mongoose');
 const session=require('express-session');
 const MongoDBStore=require('connect-mongodb-session')(session)
 require('dotenv').config();
+const multer=require('multer')
 
 // LOCAL MODULES
 const {storeRouter}=require('./routes/storeRouter');
@@ -30,9 +31,64 @@ const app=express();
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname, 'views'));
 
-// parsing request
-app.use(express.urlencoded());
+const randomNameGenerator=(length)=>{
+    const characters='qwertyuioplkjhgfdsazxcvbnm';
+    let randomName='';
+    for(i=0;i<length;i++){
+        randomName+=characters.charAt(Math.floor(Math.random()*characters.length));
+    }
+    return randomName;
+}
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        if(file.fieldname=='photo'){
+            cb(null,'uploads/images/');
+        }
+        else{
+            cb(null,'uploads/pdfs/');
+        }
+        
+    },
+    filename:(req,file,cb)=>{
+        if(file.fieldname=='photo'){
+            cb(null,randomNameGenerator(10)+"-"+file.originalname);
+        }
+        else{
+            cb(null,randomNameGenerator(10)+"-"+file.originalname);
+        }
+    }
+})
+// server side validation for filetype
+const fileFilter=(req,file,cb)=>{
+     if(file.fieldname=='photo'){
+        if(['image/jpg','image/jpeg','image/png'].includes(file.mimetype)){
+            cb(null,true);
+        }
+        else{
+            cb(null,false);
+        }
+    }
+    else{
+        // for pdf file
+        if(file.fieldname=='rulesPdf' && file.mimetype==='application/pdf'){
+            cb(null,true);
+        }
+        // if not pdf file
+        else{
+            cb(null,false);
+        }
+    }
+}
 
+const multerOptions
+={storage,fileFilter}
+// parsing  url encoded request
+app.use(express.urlencoded({extended:true}));
+// parsing multi form data
+app.use(multer(multerOptions).fields([{name:'photo',maxCount:1},{name:'rulesPdf',maxCount:1}]));
+
+// granting access to uploads folder
+app.use('/uploads',express.static(path.join(rootDir,'uploads')));
 // granting access to public folder
 app.use(express.static(path.join(rootDir,'public')));
 
@@ -69,10 +125,10 @@ app.use("/host",hostRouter);
 app.use(errorController.pageNotFound);
 
 // starting server after connecting to db
-const PORT=3007;
-
-
-
+const PORT=process.env.PORT || 3000;
+// connecting to mongodb
+// if connection is successful, server starts listening on PORT
+// if connection fails, error is logged to console
 mongoose.connect(DB_PATH)
 .then(()=>{
     console.log("connected to mongoDb")

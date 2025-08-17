@@ -10,8 +10,9 @@ const homeSchema=mongoose.Schema({
   price:{type:String,required:true},
   location:{type:String,required:true},
   rating:{type:String,required:true},
-  photoUrl:String,
-  description:String
+  photo:String,
+  description:String,
+  rulesPdf:String
 });
 
 module.exports=mongoose.model("Home",homeSchema);

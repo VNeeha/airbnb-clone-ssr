@@ -1,27 +1,29 @@
 <%-include('../partials/head')%>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <%- include('../partials/nav')%>
 
     <!-- Main Content -->
     <main class="container mx-auto mt-20 text-center px-4">
-        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-12 border border-gray-100">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-12 border border-gray-100">
             <!-- Bookings Icon -->
-            <div class="mx-auto w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            <div class="mx-auto w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
             </div>
             
             <h2 class="text-3xl font-bold text-blue-600 mb-4">My Bookings</h2>
             <p class="text-xl text-gray-600 mb-8">Your upcoming and past bookings will appear here</p>
             
-            <div class="bg-gray-50 rounded-lg p-8 border-2 border-dashed border-gray-300">
-                <svg class="mx-auto w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-                <p class="text-gray-500">No bookings found</p>
-                <p class="text-sm text-gray-400 mt-2">Start exploring properties to make your first booking</p>
+            <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-gray-500 mb-4">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <p class="text-lg">No bookings yet</p>
+                    <p class="text-sm">Start exploring homes to make your first booking!</p>
+                </div>
             </div>
         </div>
     </main>

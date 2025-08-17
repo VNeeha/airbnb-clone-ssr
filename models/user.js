@@ -13,6 +13,7 @@ const userSchema=mongoose.Schema({
   password:{type:String,required:true},
   userType:{type:String,required:true,enum:['guest','host']},
   favourites:[{type:mongoose.Schema.Types.ObjectId,ref:"Home"}]
+  
 });
 
 

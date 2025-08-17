@@ -1,9 +1,11 @@
 // CORE MODULES
 const mongoose=require('mongoose');
+const path=require('path');
 // LOCAL MODULES
 const Home=require('../models/home');
 const User=require('../models/user');
 const favourites = require('../models/favourites');
+const rootDir=require('../utils/pathUtils');
 
 
 
@@ -42,8 +44,7 @@ exports.getBookings=(req,res,next)=>{
 };
 
 
-exports.getFavouriteList=async (req,res,next)=>{  
-    const userId=req.session.user._id;
+exports.getFavouriteList=async (req,res,next)=>{   const userId=req.session.user._id;
     let user=await User.findById({_id:userId});
     if(!user.favourites){
         user.favourites=[]
@@ -83,3 +84,13 @@ exports.DeleteFromFavourites=async (req,res,next)=>{
     res.redirect('/store/favourites'); 
 }
 
+exports.getRulesPdf=async (req,res,next)=>{
+    if(!req.session.isLoggedIn){
+        return res.redirect('/login');
+    }
+    const homeId=req.params.homeId;
+    const home=await Home.findById(homeId);
+    const rulesPdf=home.rulesPdf;
+    const rulesPdfPath=path.join(rootDir,rulesPdf.replace('/uploads/', 'uploads/'))
+    res.download(rulesPdfPath,'Rules.pdf');
+}
