@@ -5,30 +5,26 @@ const Favourites = require('../models/favourites');
 const Home=require('../models/home')
 
 exports.getAddHome=(req,res,next)=>{
-    res.render('host/editHome',{pageTitle:'register here',currentPage:'addHome',editing:false,isLoggedIn:req.isLoggedIn}) ;
+    res.render('host/editHome',{pageTitle:'register here',currentPage:'addHome',editing:false,isLoggedIn:req.isLoggedIn,user:req.session.user}) ;
 };
 
 exports.getEditHome=(req,res,next)=>{
     const homeId=req.params.homeId;
     const editing=req.query.editing==='true';
     Home.findById(homeId).then(home=>{
-
         if(!home){
             res.redirect('/host/hostHomeList')
         }
         else{
-            res.render('host/editHome',{home:home,pageTitle:'edit home here',currentPage:'hostHomes',editing:editing,isLoggedIn:req.isLoggedIn}) ;
-        }
-       
+            res.render('host/editHome',{home:home,pageTitle:'edit home here',currentPage:'hostHomes',editing:editing,isLoggedIn:req.isLoggedIn,user:req.session.user}) ;
+        }       
     })
-    
 };
 
 exports.getHostHomes=(req,res,next)=>{
     Home.find().then(registeredHomes=>{
-        res.render('host/hostHomeList',{registeredHomes:registeredHomes,pageTitle:'host homes list',currentPage:'hostHomes',isLoggedIn:req.isLoggedIn});
-    });
-    
+        res.render('host/hostHomeList',{registeredHomes:registeredHomes,pageTitle:'host homes list',currentPage:'hostHomes',isLoggedIn:req.isLoggedIn,user:req.session.user});
+    });    
 };
 exports.postAddHome=(req,res,next)=>{
     const {houseName,location,price,rating,photoUrl,description}=req.body;
@@ -39,8 +35,7 @@ exports.postAddHome=(req,res,next)=>{
     })
     .catch((err)=>{
         console.log("cant add home",err)
-    });
-    
+    });    
 };
 exports.postEditHome=(req,res,next)=>{
     const {houseName,location,price,rating,photoUrl,description,id}=req.body;
@@ -63,7 +58,6 @@ exports.postEditHome=(req,res,next)=>{
     }).finally(()=>{
         res.redirect('/host/hostHomeList')
     })
-
 };
 
 exports.postDeleteHome=(req,res,next)=>{

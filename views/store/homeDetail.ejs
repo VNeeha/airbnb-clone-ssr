@@ -1,46 +1,91 @@
 <%- include('../partials/head') %>
   </head>
-  <body>
+  <body class="bg-gray-50">
       <%- include('../partials/nav') %>
-      <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
-          <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
-              Details of <%= home.houseName %>
-          </h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div class="rounded-lg overflow-hidden">
-                  <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-96 object-cover">
-              </div>
-              
-              <div class="space-y-6">
-                  <div class="border-b pb-4">
-                      <h3 class="text-2xl font-semibold mb-2">Description</h3>
-                      <p class="text-gray-600"><%= home.description %></p>
+      
+      <!-- Hero Section with Property Image -->
+      <div class="relative w-full h-96 md:h-[500px] overflow-hidden">
+          <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+          <div class="absolute bottom-6 left-6 text-white">
+              <h1 class="text-4xl md:text-5xl font-bold mb-2"><%= home.houseName %></h1>
+              <div class="flex items-center space-x-4 text-lg">
+                  <div class="flex items-center">
+                      <span class="text-yellow-400 text-xl mr-1">★</span>
+                      <span><%= home.rating %>/5</span>
                   </div>
-
-                  <div class="border-b pb-4">
-                      <h3 class="text-2xl font-semibold mb-2">Location</h3>
-                      <p class="text-gray-600"><%= home.location %></p>
+                  <div class="flex items-center">
+                      <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span><%= home.location %></span>
                   </div>
-                  
-                  <div class="border-b pb-4">
-                      <h3 class="text-2xl font-semibold mb-2">Price</h3>
-                      <p class="text-green-600 text-xl font-bold">Rs.<%= home.price %> / night</p>
-                  </div>
-                  
-                  <div class="border-b pb-4">
-                      <h3 class="text-2xl font-semibold mb-2">Rating</h3>
-                      <div class="flex items-center">
-                          <span class="text-yellow-400 text-xl">★</span>
-                          <span class="ml-2 text-lg"><%= home.rating %> / 5</span>
-                      </div>
-                  </div>
-                  <div>
-                    <%-include('../partials/favourites',{home:home});%>
-                  </div>
-                  
               </div>
           </div>
-      </main>
+      </div>
+
+      <!-- Property Details Card -->
+      <div class="container mx-auto px-4 -mt-8 relative z-10 max-w-6xl">
+          <div class="bg-white rounded-xl shadow-xl p-8">
+              <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Property Details</h2>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  <!-- Left Column - Description -->
+                  <div class="space-y-6">
+                      <div>
+                          <h3 class="text-2xl font-bold text-gray-800 mb-4">Description</h3>
+                          <p class="text-gray-600 leading-relaxed"><%= home.description %></p>
+                      </div>
+                      
+                      <div class="pt-4">
+                          <a href="#" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+                              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                              </svg>
+                              Download House Rules
+                          </a>
+                      </div>
+                      
+                      <div class="pt-4">
+                          <%-include('../partials/favourites',{home:home});%>
+                      </div>
+                  </div>
+                  
+                  <!-- Right Column - Features -->
+                  <div class="space-y-6">
+                      <div>
+                          <h3 class="text-2xl font-bold text-gray-800 mb-4">Features</h3>
+                          <div class="space-y-3">
+                              <div class="flex items-center">
+                                  <svg class="w-5 h-5 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                  </svg>
+                                  <span class="text-gray-700">Prime Location</span>
+                              </div>
+                              <div class="flex items-center">
+                                  <svg class="w-5 h-5 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                  </svg>
+                                  <span class="text-gray-700">Highly Rated (<%= home.rating %>/5)</span>
+                              </div>
+                              <div class="flex items-center">
+                                  <svg class="w-5 h-5 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                  </svg>
+                                  <span class="text-gray-700">Modern Amenities</span>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="pt-4">
+                          <h3 class="text-2xl font-bold text-gray-800 mb-4">Pricing</h3>
+                          <div class="bg-gray-50 rounded-lg p-4">
+                              <p class="text-3xl font-bold text-green-600">Rs. <%= home.price %> <span class="text-lg text-gray-600 font-normal">/ night</span></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
   </body>
 </html>

@@ -5,7 +5,7 @@ const path=require('path');
 const express=require('express');
 const {default:mongoose}=require('mongoose');
 const session=require('express-session');
-const MongoDBStore=require('connect-mongodb-session')(session);
+const MongoDBStore=require('connect-mongodb-session')(session)
 require('dotenv').config();
 
 // LOCAL MODULES
@@ -36,7 +36,6 @@ app.use(express.urlencoded());
 // granting access to public folder
 app.use(express.static(path.join(rootDir,'public')));
 
-
 // creating session object 
 app.use(session({
     secret:process.env.SESSION_SECRET,
@@ -45,21 +44,17 @@ app.use(session({
     store:store
 }))
 
-// // middleware for accessing cookie
-// app.use((req,res,next)=>{
-//     req.isLoggedIn=req.get("Cookie")?req.get("Cookie").split("=")[1] ==='true':false;
-//     next();
-// })
 // middleware for accessing session
 app.use((req,res,next)=>{
     req.isLoggedIn=req.session.isLoggedIn;
+    req.user = req.session.user;
     next();
 })
-
 
 // using routers for seperate interfaces-host,user,authentication
 app.use("/auth",authRouter);
 app.use("/store",storeRouter);
+
 // middleware for checking login status
 app.use((req,res,next)=>{
     if(req.isLoggedIn)
@@ -67,6 +62,7 @@ app.use((req,res,next)=>{
     else
         res.redirect('/auth/login');
 })
+
 app.use("/host",hostRouter);
 
 // unknown routing handling
@@ -74,6 +70,8 @@ app.use(errorController.pageNotFound);
 
 // starting server after connecting to db
 const PORT=3007;
+
+
 
 mongoose.connect(DB_PATH)
 .then(()=>{

@@ -1,21 +1,107 @@
 <%-include('../partials/head')%>
-<body class="bg-white ">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <!-- Header -->
     <%-include('../partials/nav')%>
 
+    <main class="container mx-auto mt-8 p-8">
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <div class="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900"><%=editing==true?'Update':'Register'%> your home on Airbnb</h1>
+                <p class="text-gray-600 mt-2"><%=editing==true?'Update your property details':'List your property for guests'%></p>
+            </div>
 
-    <main class="container mx-auto mt-8 p-8 shadow-md rounded-lg ">
-        <h1 class="text-gray-800 font-bold text-3xl mb-6 text-center"><%=editing==true?'Update':'Register'%> your home on Airbnb</h1>
-        <form action="<%=editing==true?'/host/editHome':'/host/addHome'%>" method="POST" class=" max-w-md mx-auto">
-            <input type="hidden" name="id" value="<%=editing==true?home._id:''%>">
-            <input type="text" name="houseName" value='<%= editing==true ? home.houseName:""%>'  placeholder="Enter your house name" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
-            <input type="text" name="price" value='<%= editing==true ? home.price:""%>'  placeholder="Enter price per night" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
-            <input type="text" name="location" value='<%= editing==true ? home.location:""%>'  placeholder="Location" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
-            <input type="text" name="rating" value='<%= editing==true ? home.rating:""%>'  placeholder="Rating" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
-            <input type="text" name="photoUrl" value='<%= editing==true ? home.photoUrl:""%>'  placeholder="House photo" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500">
-             <textarea type="text" name="description"   placeholder="Describe your home" class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2  ring-red-500"><%= editing==true ? home.description:""%></textarea>
-            <input type="submit" value=<%=editing==true?'Update':"Submit"%> class="w-full bg-red-500 text-white  py-2 rounded-md hover:bg-red-600 transition duration-300">
-        </form>
+            <form action="<%=editing==true?'/host/editHome':'/host/addHome'%>" method="POST" class="space-y-6">
+                <input type="hidden" name="id" value="<%=editing==true?home._id:''%>">
+                
+                <!-- House Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">House Name</label>
+                    <input 
+                        type="text" 
+                        name="houseName" 
+                        value='<%= editing==true ? home.houseName:""%>'  
+                        placeholder="Enter your house name" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    >
+                </div>
+
+                <!-- Price -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Price per Night</label>
+                    <input 
+                        type="text" 
+                        name="price" 
+                        value='<%= editing==true ? home.price:""%>'  
+                        placeholder="Enter price per night" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    >
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                    <input 
+                        type="text" 
+                        name="location" 
+                        value='<%= editing==true ? home.location:""%>'  
+                        placeholder="Location" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    >
+                </div>
+
+                <!-- Rating -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+                    <input 
+                        type="text" 
+                        name="rating" 
+                        value='<%= editing==true ? home.rating:""%>'  
+                        placeholder="Rating" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    >
+                </div>
+
+                <!-- Photo URL -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">House Photo URL</label>
+                    <input 
+                        type="text" 
+                        name="photoUrl" 
+                        value='<%= editing==true ? home.photoUrl:""%>'  
+                        placeholder="House photo URL" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    >
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                    <textarea 
+                        name="description"   
+                        placeholder="Describe your home" 
+                        rows="4"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    ><%= editing==true ? home.description:""%></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <%=editing==true?'Update Property':'Submit Property'%>
+                </button>
+            </form>
+        </div>
     </main>
 </body>
 </html>
